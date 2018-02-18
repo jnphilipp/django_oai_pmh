@@ -81,3 +81,36 @@ class Header(models.Model):
         ordering = ('identifier',)
         verbose_name = _('Header')
         verbose_name_plural = _('Headers')
+
+
+class ResumptionToken(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    expiration_date = models.DateTimeField()
+    complete_list_size = models.IntegerField(default=0)
+    cursor = models.IntegerField(default=0)
+    token = SingleLineTextField(unique=True)
+
+    from_timestamp = models.DateTimeField(blank=True, null=True)
+    until_timestamp = models.DateTimeField(blank=True, null=True)
+    metadata_prefix = models.ForeignKey(
+        MetadataFormat,
+        models.CASCADE,
+        blank=True,
+        null=True
+    )
+    set_spec = models.ForeignKey(
+        Set,
+        models.CASCADE,
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return self.token
+
+    class Meta:
+        ordering = ('expiration_date',)
+        verbose_name = _('Resumption token')
+        verbose_name_plural = _('Resumption tokens')

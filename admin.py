@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Header, MetadataFormat, Set
+from .models import Header, MetadataFormat, ResumptionToken, Set
 
 
 @admin.register(Header)
@@ -44,6 +44,22 @@ class MetadataFormatAdmin(admin.ModelAdmin):
     ]
     list_display = ('prefix', 'schema', 'namespace')
     search_fields = ('prefix', 'schema', 'namespace')
+
+
+@admin.register(ResumptionToken)
+class ResumptionTokenAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['token', 'expiration_date', 'complete_list_size',
+                           'cursor']}),
+        (_('Optinal'), {
+            'fields': ['from_timestamp', 'until_timestamp', 'metadata_prefix',
+                       'set_spec'],
+            'classes': ('collapse',)
+        }),
+    ]
+    list_display = ('token', 'expiration_date', 'complete_list_size', 'cursor')
+    list_filter = ('expiration_date',)
+    search_fields = ('token', 'complete_list_size', 'cursor')
 
 
 @admin.register(Set)
