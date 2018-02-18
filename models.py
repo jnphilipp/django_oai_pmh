@@ -54,3 +54,30 @@ class Set(models.Model):
         ordering = ('name',)
         verbose_name = _('Set')
         verbose_name_plural = _('Sets')
+
+
+class Header(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    identifier = SingleLineTextField(unique=True)
+    timestamp = models.DateTimeField(auto_now=True)
+    deleted = models.BooleanField(default=False)
+    metadata_formats = models.ManyToManyField(
+        MetadataFormat,
+        blank=True,
+        related_name='identifiers'
+    )
+    sets = models.ManyToManyField(
+        Set,
+        blank=True,
+        related_name='headers'
+    )
+
+    def __str__(self):
+        return self.identifier
+
+    class Meta:
+        ordering = ('identifier',)
+        verbose_name = _('Header')
+        verbose_name_plural = _('Headers')

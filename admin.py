@@ -20,7 +20,21 @@ from django.contrib import admin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .models import MetadataFormat, Set
+from .models import Header, MetadataFormat, Set
+
+
+@admin.register(Header)
+class HeaderAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['identifier', 'timestamp', 'deleted']}),
+        (_('Metadata formats'), {'fields': ['metadata_formats']}),
+        (_('Sets'), {'fields': ['sets']}),
+    ]
+    filter_horizontal = ('metadata_formats', 'sets')
+    list_display = ('identifier', 'timestamp', 'deleted')
+    list_filter = ('timestamp', 'deleted')
+    readonly_fields = ('timestamp',)
+    search_fields = ('identifier',)
 
 
 @admin.register(MetadataFormat)
