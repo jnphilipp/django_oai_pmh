@@ -37,3 +37,20 @@ class MetadataFormat(models.Model):
         ordering = ('prefix',)
         verbose_name = _('Metadata format')
         verbose_name_plural = _('Metadata formats')
+
+
+class Set(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    spec = SingleLineTextField(unique=True)
+    name = SingleLineTextField()
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = _('Set')
+        verbose_name_plural = _('Sets')

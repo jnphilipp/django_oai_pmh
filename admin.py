@@ -18,8 +18,9 @@
 
 from django.contrib import admin
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
-from .models import MetadataFormat
+from .models import MetadataFormat, Set
 
 
 @admin.register(MetadataFormat)
@@ -29,3 +30,13 @@ class MetadataFormatAdmin(admin.ModelAdmin):
     ]
     list_display = ('prefix', 'schema', 'namespace')
     search_fields = ('prefix', 'schema', 'namespace')
+
+
+@admin.register(Set)
+class SetAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['name', 'spec']}),
+        (_('Description'), {'fields': ['description']}),
+    ]
+    list_display = ('name', 'spec', 'description')
+    search_fields = ('name', 'spec', 'description')
