@@ -114,3 +114,85 @@ class ResumptionToken(models.Model):
         ordering = ('expiration_date',)
         verbose_name = _('Resumption token')
         verbose_name_plural = _('Resumption tokens')
+
+
+class DCRecord(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    header = models.OneToOneField(Header, models.CASCADE, primary_key=True)
+    identifier = SingleLineTextField(verbose_name=' dc:identifier')
+    date = models.DateTimeField(auto_now=True, verbose_name=' dc:date')
+    title = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:title'
+    )
+    creator = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:creator'
+    )
+    subject = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:subject'
+    )
+    description = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:description'
+    )
+    publisher = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:publisher'
+    )
+    contributor = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:contributor'
+    )
+    type = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:type'
+    )
+    format = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:format'
+    )
+    source = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:source'
+    )
+    language = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:language'
+    )
+    relation = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:relation'
+    )
+    coverage = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:coverage'
+    )
+    rights = SingleLineTextField(
+        blank=True,
+        null=True,
+        verbose_name=' dc:rights'
+    )
+
+    def __str__(self):
+        return str(self.header)
+
+    class Meta:
+        ordering = ('header',)
+        verbose_name = _('Dublin Core record')
+        verbose_name_plural = _('Dublin Core records')

@@ -20,8 +20,24 @@ from django.contrib import admin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Header, MetadataFormat, ResumptionToken, Set
+from .models import DCRecord, Header, MetadataFormat, ResumptionToken, Set
 
+
+@admin.register(DCRecord)
+class DCRecordAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['header', 'identifier', 'date', 'title', 'creator',
+                           'subject', 'description', 'publisher', 'contributor',
+                           'type', 'format', 'source', 'language', 'relation',
+                           'coverage', 'rights']}),
+    ]
+    list_display = ('identifier', 'title', 'creator', 'date')
+    list_filter = ('date',)
+    readonly_fields = ('date',)
+    search_fields = ('identifier', 'title', 'creator', 'subject', 'description',
+                     'publisher', 'contributor', 'date', 'type', 'format',
+                     'identifier', 'source', 'language', 'relation', 'coverage',
+                     'rights')
 
 @admin.register(Header)
 class HeaderAdmin(admin.ModelAdmin):
