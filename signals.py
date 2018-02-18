@@ -16,14 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
 
-from django.apps import AppConfig
-from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.utils import timezone
+
+from .models import ResumptionToken
 
 
-class OAIPMHConfig(AppConfig):
-    name = 'oai_pmh'
-    verbose_name = _('OAI-PMH')
-    verbose_name_plural = _('OAI-PMH')
-
-    def ready(self):
-        import .signals
+@receiver(pre_save, sender=ResumptionToken)
+def delete_old_resumption_tokens(sender, **kwargs):
+    ResumptionToken.objects.filter(expiration_date__lte=timezone.now()).delete()
