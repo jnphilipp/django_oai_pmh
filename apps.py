@@ -26,4 +26,4 @@ class OAIPMHConfig(AppConfig):
     verbose_name_plural = _('OAI-PMH')
 
     def ready(self):
-        import .signals
+        from . import signals
