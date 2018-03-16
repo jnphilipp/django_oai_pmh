@@ -94,7 +94,7 @@ def resumption_token(paginator, page, metadata_prefix=None, set_spec=None,
 
         metadata_format = None
         if metadata_prefix:
-            MetadataFormat.objects.get(prefix=metadata_prefix)
+            metadata_format = MetadataFormat.objects.get(prefix=metadata_prefix)
         set_spec = None
         if set_spec:
             set_spec = Set.objects.get(spec=set_spec)
