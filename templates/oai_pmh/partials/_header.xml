@@ -1,0 +1,7 @@
+<header {% if header.deleted %}status="deleted"{% endif %}>
+    <identifier>{{ header.identifier }}</identifier>
+    <datestamp>{{ header.timestamp|date:"Y-m-d" }}T{{ header.timestamp|date:"H:i:s" }}Z</datestamp>
+    {% for set in header.sets.all %}
+        <setSpec>{{ set.spec }}</setSpec>
+    {% endfor %}
+</header>

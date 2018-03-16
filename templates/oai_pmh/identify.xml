@@ -1,0 +1,15 @@
+{% extends "oai_pmh/base.xml" %}
+{% load oai_pmh %}
+
+
+{% block content %}
+<Identify>
+    <repositoryName>{% repository_name %}</repositoryName>
+    <baseURL>{% base_url %}</baseURL>
+    <protocolVersion>2.0</protocolVersion>
+    {% admin_emails %}
+    <earliestDatestamp>2015-07-02T00:00:00Z</earliestDatestamp>
+    <deletedRecord>persistent</deletedRecord>
+    <granularity>YYYY-MM-DDThh:mm:ssZ</granularity>
+</Identify>
+{% endblock %}

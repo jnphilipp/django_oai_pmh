@@ -1,0 +1,18 @@
+{% extends "oai_pmh/base.xml" %}
+{% load oai_pmh %}
+
+
+{% block content %}
+<ListSets>
+    {% for set in sets %}
+        <set>
+            <setSpec>{{ set.spec }}</setSpec>
+            <setName>{{ set.name }}</setName>
+            {% if set.description %}
+                <setDescription>{% autoescape off %}{{ set.description }}{% endautoescape %}</setDescription>
+            {% endif %}
+        </set>
+    {% endfor %}
+    {% resumption_token paginator sets %}
+</ListSets>
+{% endblock %}

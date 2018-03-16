@@ -1,0 +1,9 @@
+{% extends "oai_pmh/base.xml" %}
+{% load oai_pmh %}
+
+
+{% block content %}
+<GetRecord>
+    {% include "oai_pmh/partials/_record.xml" with header=header metadata_prefix=metadata_prefix %}
+</GetRecord>
+{% endblock %}
