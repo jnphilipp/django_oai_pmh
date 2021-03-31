@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+# Copyright (C) 2018-2021 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
 #
 # This file is part of django_oai_pmh.
 #
@@ -15,9 +15,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
+"""OAI-PMH Django app admin."""
 
 from django.contrib import admin
 from django.db import models
+from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
 
 from .models import DCRecord, Header, MetadataFormat, ResumptionToken, Set
@@ -25,64 +27,160 @@ from .models import DCRecord, Header, MetadataFormat, ResumptionToken, Set
 
 @admin.register(DCRecord)
 class DCRecordAdmin(admin.ModelAdmin):
+    """DCRecord Django admin."""
+
     fieldsets = [
-        (None, {'fields': ['header', 'identifier', 'date', 'title', 'creator',
-                           'subject', 'description', 'publisher', 'contributor',
-                           'type', 'format', 'source', 'language', 'relation',
-                           'coverage', 'rights']}),
+        (
+            None,
+            {
+                "fields": [
+                    "created_at",
+                    "updated_at",
+                    "header",
+                    "identifier",
+                    "date",
+                    "title",
+                    "creator",
+                    "subject",
+                    "description",
+                    "publisher",
+                    "contributor",
+                    "type",
+                    "format",
+                    "source",
+                    "language",
+                    "relation",
+                    "coverage",
+                    "rights",
+                ]
+            },
+        ),
     ]
-    list_display = ('identifier', 'title', 'creator', 'date')
-    list_filter = ('date',)
-    readonly_fields = ('date',)
-    search_fields = ('identifier', 'title', 'creator', 'subject', 'description',
-                     'publisher', 'contributor', 'date', 'type', 'format',
-                     'identifier', 'source', 'language', 'relation', 'coverage',
-                     'rights')
+    formfield_overrides = {
+        models.TextField: {"widget": TextInput},
+    }
+    list_display = ("identifier", "title", "creator", "date")
+    list_filter = ("date",)
+    readonly_fields = ("created_at", "updated_at", "date")
+    search_fields = (
+        "identifier",
+        "title",
+        "creator",
+        "subject",
+        "description",
+        "publisher",
+        "contributor",
+        "date",
+        "type",
+        "format",
+        "identifier",
+        "source",
+        "language",
+        "relation",
+        "coverage",
+        "rights",
+    )
+
 
 @admin.register(Header)
 class HeaderAdmin(admin.ModelAdmin):
+    """Header Django admin."""
+
     fieldsets = [
-        (None, {'fields': ['identifier', 'timestamp', 'deleted']}),
-        (_('Metadata formats'), {'fields': ['metadata_formats']}),
-        (_('Sets'), {'fields': ['sets']}),
+        (
+            None,
+            {
+                "fields": [
+                    "created_at",
+                    "updated_at",
+                    "identifier",
+                    "timestamp",
+                    "deleted",
+                ]
+            },
+        ),
+        (_("Metadata formats"), {"fields": ["metadata_formats"]}),
+        (_("Sets"), {"fields": ["sets"]}),
     ]
-    filter_horizontal = ('metadata_formats', 'sets')
-    list_display = ('identifier', 'timestamp', 'deleted')
-    list_filter = ('timestamp', 'deleted')
-    readonly_fields = ('timestamp',)
-    search_fields = ('identifier',)
+    formfield_overrides = {
+        models.TextField: {"widget": TextInput},
+    }
+    filter_horizontal = ("metadata_formats", "sets")
+    list_display = ("identifier", "timestamp", "deleted")
+    list_filter = ("timestamp", "deleted")
+    readonly_fields = ("created_at", "updated_at", "timestamp")
+    search_fields = ("identifier",)
 
 
 @admin.register(MetadataFormat)
 class MetadataFormatAdmin(admin.ModelAdmin):
+    """MetadataFormat Django admin."""
+
     fieldsets = [
-        (None, {'fields': ['prefix', 'schema', 'namespace']}),
+        (
+            None,
+            {"fields": ["created_at", "updated_at", "prefix", "schema", "namespace"]},
+        ),
     ]
-    list_display = ('prefix', 'schema', 'namespace')
-    search_fields = ('prefix', 'schema', 'namespace')
+    formfield_overrides = {
+        models.TextField: {"widget": TextInput},
+    }
+    list_display = ("prefix", "schema", "namespace")
+    readonly_fields = ("created_at", "updated_at")
+    search_fields = ("prefix", "schema", "namespace")
 
 
 @admin.register(ResumptionToken)
 class ResumptionTokenAdmin(admin.ModelAdmin):
+    """ResumptionToken Django admin."""
+
     fieldsets = [
-        (None, {'fields': ['token', 'expiration_date', 'complete_list_size',
-                           'cursor']}),
-        (_('Optinal'), {
-            'fields': ['from_timestamp', 'until_timestamp', 'metadata_prefix',
-                       'set_spec'],
-            'classes': ('collapse',)
-        }),
+        (
+            None,
+            {
+                "fields": [
+                    "created_at",
+                    "updated_at",
+                    "token",
+                    "expiration_date",
+                    "complete_list_size",
+                    "cursor",
+                ]
+            },
+        ),
+        (
+            _("Optinal"),
+            {
+                "fields": [
+                    "from_timestamp",
+                    "until_timestamp",
+                    "metadata_prefix",
+                    "set_spec",
+                ],
+                "classes": ("collapse",),
+            },
+        ),
     ]
-    list_display = ('token', 'expiration_date', 'complete_list_size', 'cursor')
-    list_filter = ('expiration_date',)
-    search_fields = ('token', 'complete_list_size', 'cursor')
+    formfield_overrides = {
+        models.TextField: {"widget": TextInput},
+    }
+    list_display = ("token", "expiration_date", "complete_list_size", "cursor")
+    list_filter = ("expiration_date",)
+    readonly_fields = ("created_at", "updated_at")
+    search_fields = ("token", "complete_list_size", "cursor")
 
 
 @admin.register(Set)
 class SetAdmin(admin.ModelAdmin):
+    """Set Django admin."""
+
     fieldsets = [
-        (None, {'fields': ['name', 'spec']}),
-        (_('Description'), {'fields': ['description']}),
+        (None, {"fields": ["created_at", "updated_at", "name", "spec"]}),
+        (_("Description"), {"fields": ["description"]}),
     ]
-    list_display = ('name', 'spec', 'description')
-    search_fields = ('name', 'spec', 'description')
+    formfield_overrides = {
+        models.TextField: {"widget": TextInput},
+    }
+    list_display = ("name", "spec", "description")
+    readonly_fields = ("created_at", "updated_at")
+    search_fields = ("name", "spec", "description")

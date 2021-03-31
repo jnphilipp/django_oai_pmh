@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+# Copyright (C) 2018-2021 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
 #
 # This file is part of django_oai_pmh.
 #
@@ -15,6 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
+"""OAI-PMH Django app signals."""
 
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -25,4 +26,5 @@ from .models import ResumptionToken
 
 @receiver(pre_save, sender=ResumptionToken)
 def delete_old_resumption_tokens(sender, **kwargs):
+    """Delete expired resumption tokens."""
     ResumptionToken.objects.filter(expiration_date__lte=timezone.now()).delete()

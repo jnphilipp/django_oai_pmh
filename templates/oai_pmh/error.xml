@@ -1,9 +1,8 @@
 {% extends "oai_pmh/base.xml" %}
-{% load oai_pmh %}
 
 
 {% block content %}
 {% for error in errors %}
-    <error code="{{ error|get_item:"code" }}">{{ error|get_item:"msg" }}</error>
+    <error code="{{ error.code }}">{{ error.msg }}</error>
 {% endfor %}
 {% endblock %}

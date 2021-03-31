@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+# Copyright (C) 2018-2021 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
 #
 # This file is part of django_oai_pmh.
 #
@@ -15,184 +15,179 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
+"""OAI-PMH Django app models."""
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .fields import SingleLineTextField
-
 
 class MetadataFormat(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    """MetadataFormat ORM Model."""
 
-    prefix = SingleLineTextField(unique=True)
-    schema = models.URLField(max_length=2048)
-    namespace = models.URLField(max_length=2048)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+
+    prefix = models.TextField(unique=True, verbose_name=_("Prefix"))
+    schema = models.URLField(max_length=2048, verbose_name=_("Schema"))
+    namespace = models.URLField(max_length=2048, verbose_name=_("Namespace"))
 
     def __str__(self):
+        """Name."""
         return self.prefix
 
     class Meta:
-        ordering = ('prefix',)
-        verbose_name = _('Metadata format')
-        verbose_name_plural = _('Metadata formats')
+        """Meta."""
+
+        ordering = ("prefix",)
+        verbose_name = _("Metadata format")
+        verbose_name_plural = _("Metadata formats")
 
 
 class Set(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    """Set ORM Model."""
 
-    spec = SingleLineTextField(unique=True)
-    name = SingleLineTextField()
-    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+
+    spec = models.TextField(unique=True, verbose_name=_("Spec"))
+    name = models.TextField(verbose_name=_("Name"))
+    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     def __str__(self):
+        """Name."""
         return self.name
 
     class Meta:
-        ordering = ('name',)
-        verbose_name = _('Set')
-        verbose_name_plural = _('Sets')
+        """Meta."""
+
+        ordering = ("name",)
+        verbose_name = _("Set")
+        verbose_name_plural = _("Sets")
 
 
 class Header(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    """Header ORM Model."""
 
-    identifier = SingleLineTextField(unique=True)
-    timestamp = models.DateTimeField(auto_now=True)
-    deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+
+    identifier = models.TextField(unique=True, verbose_name=_("Identifier"))
+    timestamp = models.DateTimeField(auto_now=True, verbose_name=_("Spec"))
+    deleted = models.BooleanField(default=False, verbose_name=_("Deleted"))
     metadata_formats = models.ManyToManyField(
         MetadataFormat,
         blank=True,
-        related_name='identifiers'
+        related_name="identifiers",
+        verbose_name=_("Metadata format"),
     )
     sets = models.ManyToManyField(
         Set,
         blank=True,
-        related_name='headers'
+        related_name="headers",
+        verbose_name=_("Set"),
     )
 
     def __str__(self):
+        """Name."""
         return self.identifier
 
     class Meta:
-        ordering = ('identifier',)
-        verbose_name = _('Header')
-        verbose_name_plural = _('Headers')
+        """Meta."""
+
+        ordering = ("identifier",)
+        verbose_name = _("Header")
+        verbose_name_plural = _("Headers")
 
 
 class ResumptionToken(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    """ResumptionToken ORM Model."""
 
-    expiration_date = models.DateTimeField()
-    complete_list_size = models.IntegerField(default=0)
-    cursor = models.IntegerField(default=0)
-    token = SingleLineTextField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
-    from_timestamp = models.DateTimeField(blank=True, null=True)
-    until_timestamp = models.DateTimeField(blank=True, null=True)
+    expiration_date = models.DateTimeField(
+        verbose_name=_("Expiration date"),
+    )
+    complete_list_size = models.IntegerField(
+        default=0,
+        verbose_name=_("Complete list size"),
+    )
+    cursor = models.IntegerField(default=0, verbose_name=_("Cursor"))
+    token = models.TextField(unique=True, verbose_name=_("Token"))
+
+    from_timestamp = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("From timestamp"),
+    )
+    until_timestamp = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("Until timestamp"),
+    )
     metadata_prefix = models.ForeignKey(
         MetadataFormat,
         models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        verbose_name=_("Metadata prefix"),
     )
     set_spec = models.ForeignKey(
         Set,
         models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        verbose_name=_("Set spec"),
     )
 
     def __str__(self):
+        """Name."""
         return self.token
 
     class Meta:
-        ordering = ('expiration_date',)
-        verbose_name = _('Resumption token')
-        verbose_name_plural = _('Resumption tokens')
+        """Meta."""
+
+        ordering = ("expiration_date",)
+        verbose_name = _("Resumption token")
+        verbose_name_plural = _("Resumption tokens")
 
 
 class DCRecord(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    """DCRecord ORM Model."""
 
-    header = models.OneToOneField(Header, models.CASCADE, primary_key=True)
-    identifier = SingleLineTextField(verbose_name=' dc:identifier')
-    date = models.DateTimeField(auto_now=True, verbose_name=' dc:date')
-    title = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:title'
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+
+    header = models.OneToOneField(
+        Header, models.CASCADE, primary_key=True, verbose_name=_("Header")
     )
-    creator = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:creator'
+    identifier = models.TextField(verbose_name=" dc:identifier")
+    date = models.DateTimeField(auto_now=True, verbose_name=" dc:date")
+    title = models.TextField(blank=True, null=True, verbose_name=" dc:title")
+    creator = models.TextField(blank=True, null=True, verbose_name=" dc:creator")
+    subject = models.TextField(blank=True, null=True, verbose_name=" dc:subject")
+    description = models.TextField(
+        blank=True, null=True, verbose_name=" dc:description"
     )
-    subject = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:subject'
+    publisher = models.TextField(blank=True, null=True, verbose_name=" dc:publisher")
+    contributor = models.TextField(
+        blank=True, null=True, verbose_name=" dc:contributor"
     )
-    description = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:description'
-    )
-    publisher = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:publisher'
-    )
-    contributor = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:contributor'
-    )
-    type = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:type'
-    )
-    format = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:format'
-    )
-    source = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:source'
-    )
-    language = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:language'
-    )
-    relation = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:relation'
-    )
-    coverage = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:coverage'
-    )
-    rights = SingleLineTextField(
-        blank=True,
-        null=True,
-        verbose_name=' dc:rights'
-    )
+    type = models.TextField(blank=True, null=True, verbose_name=" dc:type")
+    format = models.TextField(blank=True, null=True, verbose_name=" dc:format")
+    source = models.TextField(blank=True, null=True, verbose_name=" dc:source")
+    language = models.TextField(blank=True, null=True, verbose_name=" dc:language")
+    relation = models.TextField(blank=True, null=True, verbose_name=" dc:relation")
+    coverage = models.TextField(blank=True, null=True, verbose_name=" dc:coverage")
+    rights = models.TextField(blank=True, null=True, verbose_name=" dc:rights")
 
     def __str__(self):
+        """Name."""
         return str(self.header)
 
     class Meta:
-        ordering = ('header',)
-        verbose_name = _('Dublin Core record')
-        verbose_name_plural = _('Dublin Core records')
+        """Meta."""
+
+        ordering = ("header",)
+        verbose_name = _("Dublin Core record")
+        verbose_name_plural = _("Dublin Core records")

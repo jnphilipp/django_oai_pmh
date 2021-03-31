@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import oai_pmh.fields
 
 
 class Migration(migrations.Migration):
@@ -16,16 +15,16 @@ class Migration(migrations.Migration):
             name='ResumptionToken',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('expiration_date', models.DateTimeField()),
-                ('complete_list_size', models.IntegerField(default=0)),
-                ('cursor', models.IntegerField(default=0)),
-                ('token', oai_pmh.fields.SingleLineTextField(unique=True)),
-                ('from_timestamp', models.DateTimeField(blank=True, null=True)),
-                ('until_timestamp', models.DateTimeField(blank=True, null=True)),
-                ('metadata_prefix', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='oai_pmh.MetadataFormat')),
-                ('set_spec', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='oai_pmh.Set')),
+                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
+                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated at')),
+                ('expiration_date', models.DateTimeField(verbose_name='Expiration date')),
+                ('complete_list_size', models.IntegerField(default=0, verbose_name='Complete list size')),
+                ('cursor', models.IntegerField(default=0, verbose_name='Cursor')),
+                ('token', models.TextField(unique=True, verbose_name='Token')),
+                ('from_timestamp', models.DateTimeField(blank=True, null=True, verbose_name='From timestamp')),
+                ('until_timestamp', models.DateTimeField(blank=True, null=True, verbose_name='Until timestamp')),
+                ('metadata_prefix', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='oai_pmh.metadataformat', verbose_name='Metadata prefix')),
+                ('set_spec', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='oai_pmh.set', verbose_name='Set spec')),
             ],
             options={
                 'verbose_name': 'Resumption token',

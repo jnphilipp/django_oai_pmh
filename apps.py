@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+# Copyright (C) 2018-2021 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
 #
 # This file is part of django_oai_pmh.
 #
@@ -15,15 +15,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
+"""OAI-PMH Django app config."""
 
 from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
 
 class OAIPMHConfig(AppConfig):
-    name = 'oai_pmh'
-    verbose_name = _('OAI-PMH')
-    verbose_name_plural = _('OAI-PMH')
+    """OAI-PMH Django app config."""
+
+    name = "oai_pmh"
+    verbose_name = _("OAI-PMH")
+    verbose_name_plural = _("OAI-PMH")
 
     def ready(self):
         from . import signals

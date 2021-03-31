@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+# Copyright (C) 2018-2021 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
 #
 # This file is part of django_oai_pmh.
 #
@@ -15,19 +15,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
+"""OAI-PMH Django app settings."""
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.utils import timezone
 
 
 USER_SETTINGS = getattr(settings, "OAI_PMH", {})
 
-if 'REPOSITORY_NAME' in USER_SETTINGS:
-    REPOSITORY_NAME = USER_SETTINGS['REPOSITORY_NAME']
+if "REPOSITORY_NAME" in USER_SETTINGS:
+    REPOSITORY_NAME = USER_SETTINGS["REPOSITORY_NAME"]
 else:
-    raise ImproperlyConfigured('No value for REPOSITORY_NAME.')
+    raise ImproperlyConfigured("No value for REPOSITORY_NAME.")
 
 NUM_PER_PAGE = 100
-if 'NUM_PER_PAGE' in USER_SETTINGS:
-    NUM_PER_PAGE = USER_SETTINGS['NUM_PER_PAGE']
+if "NUM_PER_PAGE" in USER_SETTINGS:
+    NUM_PER_PAGE = USER_SETTINGS["NUM_PER_PAGE"]

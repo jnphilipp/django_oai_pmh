@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+# Copyright (C) 2018-2021 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
 #
 # This file is part of django_oai_pmh.
 #
@@ -15,6 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
+"""OAI-PMH Django app templatetags."""
 
 from django.conf import settings
 from django.template import Library
@@ -31,66 +32,86 @@ from ..settings import REPOSITORY_NAME
 register = Library()
 
 
-@register.filter
-def get_item(d, key):
-    return d[key] if key in d else None
-
-
 @register.simple_tag
 def admin_emails():
-    admins = ['<adminEmail>%s</adminEmail>' % a[1] for a in settings.ADMINS]
-    return mark_safe('\n'.join(admins))
+    """Format ADMINS for adminEmail-tag."""
+    return mark_safe(
+        "\n".join([f"<adminEmail>{admin[1]}</adminEmail>" for admin in settings.ADMINS])
+    )
 
 
 @register.simple_tag
 def base_url():
-    url = settings.ALLOWED_HOSTS[0] if len(settings.ALLOWED_HOSTS) >= 1 else ''
-    return '%s%s' % (url, reverse('oai2:oai2'))
+    """Get OAI-PMH base url."""
+    url = settings.ALLOWED_HOSTS[0] if len(settings.ALLOWED_HOSTS) >= 1 else ""
+    return f"{url}{reverse('oai2:oai2')}"
 
 
 @register.simple_tag
-def list_request_attributes(verb=None, identifier=None, metadata_prefix=None,
-                            from_timestamp=None, until_timestamp=None,
-                            set_spec=None, resumption_token=None):
-    timestamp_format = '%Y-%m-%dT%H:%M:%SZ'
-    verbs = ['Identify', 'ListMetadataFormats', 'ListSets', 'GetRecord',
-             'ListIdentifiers', 'ListRecords']
+def list_request_attributes(
+    verb=None,
+    identifier=None,
+    metadata_prefix=None,
+    from_timestamp=None,
+    until_timestamp=None,
+    set_spec=None,
+    resumption_token=None,
+):
+    """List requested attributes."""
+    timestamp_format = "%Y-%m-%dT%H:%M:%SZ"
+    verbs = [
+        "Identify",
+        "ListMetadataFormats",
+        "ListSets",
+        "GetRecord",
+        "ListIdentifiers",
+        "ListRecords",
+    ]
 
-    attributes = ''
+    attributes = ""
     if verb and verb in verbs:
-        attributes = 'verb="%s"' % verb
+        attributes = f'verb="{verb}"'
     if identifier:
-        attributes += ' identifier="%s"' % escape(identifier)
+        attributes += f' identifier="{escape(identifier)}"'
     if metadata_prefix:
-        attributes += ' metadataPrefix="%s"' % escape(metadata_prefix)
+        attributes += f' metadataPrefix="{escape(metadata_prefix)}"'
     if from_timestamp:
-        attributes += ' from="%s"' % from_timestamp.strftime(timestamp_format)
+        attributes += f' from="{from_timestamp.strftime(timestamp_format)}"'
     if until_timestamp:
-        attributes += ' until="%s"' % until_timestamp.strftime(timestamp_format)
+        attributes += f' until="{until_timestamp.strftime(timestamp_format)}"'
     if set_spec:
-        attributes += ' set="%s"' % escape(set_spec)
+        attributes += ' set="{escape(set_spec)}"'
     if resumption_token:
-        attributes += ' resumptionToken="%s"' % escape(resumption_token)
+        attributes += ' resumptionToken="{escape(resumption_token)}"'
     return mark_safe(attributes)
 
 
 @register.simple_tag
-def multiple_tags(string, tag, delimiter=';'):
-    tags = ['<%s>%s</%s>' % (tag, s, tag) for s in string.split(delimiter)]
-    return mark_safe('\n'.join(tags))
+def multiple_tags(string, tag, delimiter=";"):
+    """Split string and format as multile HTML tags."""
+    tags = [f"<{tag}>{s}</{tag}>" for s in string.split(delimiter)]
+    return mark_safe("\n".join(tags))
 
 
 @register.simple_tag
 def repository_name():
+    """Format repository name."""
     return mark_safe(REPOSITORY_NAME)
 
 
 @register.simple_tag
-def resumption_token(paginator, page, metadata_prefix=None, set_spec=None,
-                     from_timestamp=None, until_timestamp=None):
+def resumption_token(
+    paginator,
+    page,
+    metadata_prefix=None,
+    set_spec=None,
+    from_timestamp=None,
+    until_timestamp=None,
+):
+    """Get resumption token."""
     if paginator.num_pages > 0 and page.has_next():
         expiration_date = timezone.now() + timezone.timedelta(days=1)
-        token = ''.join('%02x' % i for i in urandom(16))
+        token = "".join("%02x" % i for i in urandom(16))
 
         metadata_format = None
         if metadata_prefix:
@@ -107,19 +128,14 @@ def resumption_token(paginator, page, metadata_prefix=None, set_spec=None,
             metadata_prefix=metadata_format,
             set_spec=set_spec,
             from_timestamp=from_timestamp,
-            until_timestamp=until_timestamp
+            until_timestamp=until_timestamp,
         )
 
-        tag = '<resumptionToken expirationDate="%s" completeListSize="%s" ' + \
-            'cursor="%s">%s</resumptionToken>'
-        return mark_safe(tag % (expiration_date.strftime('%Y-%m-%dT%H:%M:%SZ'),
-                                paginator.count, page.end_index(), token))
+        return mark_safe(
+            "<resumptionToken expirationDate="
+            + f"\"{expiration_date.strftime('%Y-%m-%dT%H:%M:%SZ')}\" "
+            + f'completeListSize="{paginator.count}" cursor="{page.end_index()}">'
+            + f"{token}</resumptionToken>"
+        )
     else:
-        return ''
-
-
-@register.simple_tag
-def timestamp(format_string):
-    if format_string == 'UTC':
-        return timezone.now().strftime('%Y-%m-%dT%H:%M:%SZ')
-    return timezone.now().strftime(format_string)
+        return ""

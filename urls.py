@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Nathanael Philipp (jnphilipp) <mail@jnphilipp.org>
+# Copyright (C) 2018-2021 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
 #
 # This file is part of django_oai_pmh.
 #
@@ -15,13 +15,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
+"""OAI-PMH Django app url."""
 
 from django.urls import path
 
-from .views import oai2
+from . import views
 
 
-app_name = 'oai2'
+app_name = "oai2"
 urlpatterns = [
-    path('', oai2, name='oai2'),
+    path("", views.oai2, name="oai2"),
 ]
