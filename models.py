@@ -17,8 +17,12 @@
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
 """OAI-PMH Django app models."""
 
+import re
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from lxml import etree
+from typing import Optional, Tuple, Type, TypeVar
 
 
 class MetadataFormat(models.Model):
@@ -72,7 +76,7 @@ class Header(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     identifier = models.TextField(unique=True, verbose_name=_("Identifier"))
-    timestamp = models.DateTimeField(auto_now=True, verbose_name=_("Spec"))
+    timestamp = models.DateTimeField(auto_now=True, verbose_name=_("Timestamp"))
     deleted = models.BooleanField(default=False, verbose_name=_("Deleted"))
     metadata_formats = models.ManyToManyField(
         MetadataFormat,
@@ -155,6 +159,8 @@ class ResumptionToken(models.Model):
 class DCRecord(models.Model):
     """DCRecord ORM Model."""
 
+    T = TypeVar("T", bound="DCRecord", covariant=True)
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
@@ -181,7 +187,24 @@ class DCRecord(models.Model):
     coverage = models.TextField(blank=True, null=True, verbose_name=" dc:coverage")
     rights = models.TextField(blank=True, null=True, verbose_name=" dc:rights")
 
-    def __str__(self):
+    @classmethod
+    def from_xml(cls: Type[T], data: str, header: Header) -> Tuple[Optional[T], bool]:
+        """Create DCRecord from xml string."""
+        identifier = None
+        defaults = {}
+        for child in etree.XML(data):
+            if re.sub(r"\{[^\}]+\}", "", child.tag) == "identifier":
+                identifier = child.text.strip()
+            else:
+                defaults[re.sub(r"\{[^\}]+\}", "", child.tag)] = child.text.strip()
+
+        if identifier is None:
+            return None, False
+        return cls.objects.update_or_create(
+            header=header, identifier=identifier, defaults=defaults
+        )
+
+    def __str__(self: T) -> str:
         """Name."""
         return str(self.header)
 
@@ -191,3 +214,38 @@ class DCRecord(models.Model):
         ordering = ("header",)
         verbose_name = _("Dublin Core record")
         verbose_name_plural = _("Dublin Core records")
+
+
+class XMLRecord(models.Model):
+    """XMLRecord ORM Model."""
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+
+    header = models.ForeignKey(
+        Header, models.CASCADE, related_name="xmlrecords", verbose_name=_("Header")
+    )
+    metadata_prefix = models.ForeignKey(
+        MetadataFormat,
+        models.CASCADE,
+        related_name="xmlrecords",
+        verbose_name=_("Metadata prefix"),
+    )
+    xml_metadata = models.TextField(verbose_name=_("XML metadta"))
+
+    def save(self, *args, **kwargs):
+        """Save."""
+        self.xml_metadata = re.sub(r"^<\?xml[^>]+\?>\s*", "", self.xml_metadata)
+        super(XMLRecord, self).save(*args, **kwargs)
+
+    def __str__(self):
+        """Name."""
+        return f"{self.metadata_prefix}[{self.header}]"
+
+    class Meta:
+        """Meta."""
+
+        ordering = ("header", "metadata_prefix")
+        unique_together = ()
+        verbose_name = _("XML record")
+        verbose_name_plural = _("XML records")

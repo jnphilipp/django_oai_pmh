@@ -13,11 +13,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Header',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated at')),
                 ('identifier', models.TextField(unique=True, verbose_name='Identifier')),
-                ('timestamp', models.DateTimeField(auto_now=True, verbose_name='Spec')),
+                ('timestamp', models.DateTimeField(auto_now=True, verbose_name='Timestamp')),
                 ('deleted', models.BooleanField(default=False, verbose_name='Deleted')),
                 ('metadata_formats', models.ManyToManyField(blank=True, related_name='identifiers', to='oai_pmh.MetadataFormat', verbose_name='Metadata format')),
                 ('sets', models.ManyToManyField(blank=True, related_name='headers', to='oai_pmh.Set', verbose_name='Set')),

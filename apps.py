@@ -24,9 +24,11 @@ from django.utils.translation import ugettext_lazy as _
 class OAIPMHConfig(AppConfig):
     """OAI-PMH Django app config."""
 
+    default_auto_field = "django.db.models.BigAutoField"
     name = "oai_pmh"
     verbose_name = _("OAI-PMH")
     verbose_name_plural = _("OAI-PMH")
 
     def ready(self):
+        """Ready."""
         from . import signals

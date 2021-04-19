@@ -15,6 +15,6 @@ repos:
     rev: 3.8.4
     hooks:
     -   id: flake8
-        exclude: (migrations/)
+        exclude: (migrations/|tests)
         additional_dependencies: [pep8-naming, flake8-docstrings]
         args: [--max-line-length=88, "--extend-ignore=E203"]

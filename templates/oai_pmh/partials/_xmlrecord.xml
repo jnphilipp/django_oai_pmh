@@ -1,0 +1,2 @@
+{% load oai_pmh %}
+{{ header|xmlrecord:metadata_prefix }}

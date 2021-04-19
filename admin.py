@@ -22,7 +22,7 @@ from django.db import models
 from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
 
-from .models import DCRecord, Header, MetadataFormat, ResumptionToken, Set
+from .models import DCRecord, Header, MetadataFormat, ResumptionToken, Set, XMLRecord
 
 
 @admin.register(DCRecord)
@@ -184,3 +184,20 @@ class SetAdmin(admin.ModelAdmin):
     list_display = ("name", "spec", "description")
     readonly_fields = ("created_at", "updated_at")
     search_fields = ("name", "spec", "description")
+
+
+@admin.register(XMLRecord)
+class XMLRecordAdmin(admin.ModelAdmin):
+    """XMLRecord Django admin."""
+
+    fieldsets = [
+        (None, {"fields": ["created_at", "updated_at", "header", "metadata_prefix"]}),
+        (_("XML metadata"), {"fields": ["xml_metadata"]}),
+    ]
+    list_display = ("header", "metadata_prefix")
+    readonly_fields = ("created_at", "updated_at")
+    search_fields = (
+        "header__identifier",
+        "metadata_prefix__prefix",
+        "metadata_prefix__schema",
+    )

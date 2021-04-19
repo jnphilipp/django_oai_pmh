@@ -1,10 +1,15 @@
+{% load oai_pmh %}
 <record>
     {% include "oai_pmh/partials/_header.xml" with header=header %}
     {% if not header.deleted %}
         <metadata>
-            {% with template_name="_"|add:metadata_prefix|add:".xml" %}
-                {% include "oai_pmh/partials/"|add:template_name with header=header %}
-            {% endwith %}
+            {% if header|has_xmlrecord:metadata_prefix %}
+                {% include "oai_pmh/partials/_xmlrecord.xml" with header=header metadata_prefix=metadata_prefix %}
+            {% else %}
+                {% with template_name="_"|add:metadata_prefix|add:".xml" %}
+                    {% include "oai_pmh/partials/"|add:template_name with header=header %}
+                {% endwith %}
+            {% endif %}
         </metadata>
     {% endif %}
 </record>
