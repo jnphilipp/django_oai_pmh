@@ -41,7 +41,9 @@ def has_xmlrecord(header, metadata_prefix):
 @register.filter
 def xmlrecord(header, metadata_prefix):
     """Check whether header has XMLRecord with metadata prefix."""
-    return header.xmlrecords.get(metadata_prefix__prefix=metadata_prefix).xml_metadata
+    return mark_safe(
+        header.xmlrecords.get(metadata_prefix__prefix=metadata_prefix).xml_metadata
+    )
 
 
 @register.simple_tag
