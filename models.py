@@ -193,10 +193,14 @@ class DCRecord(models.Model):
         identifier = None
         defaults = {}
         for child in etree.XML(data):
-            if re.sub(r"\{[^\}]+\}", "", child.tag) == "identifier":
+            tag_name = re.sub(r"\{[^\}]+\}", "", child.tag)
+            if tag_name == "identifier":
                 identifier = child.text.strip()
             else:
-                defaults[re.sub(r"\{[^\}]+\}", "", child.tag)] = child.text.strip()
+                if tag_name in defaults and tag_name in ["contributor", "relation"]:
+                    defaults[tag_name] += f";{child.text.strip()}"
+                else:
+                    defaults[tag_name] = child.text.strip()
 
         if identifier is None:
             return None, False
