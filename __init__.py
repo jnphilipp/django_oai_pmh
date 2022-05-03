@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
+# Copyright (C) 2018-2022 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
 #
 # This file is part of django_oai_pmh.
 #
@@ -16,5 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
 """OAI-PMH Django app."""
+
+__author__ = "J. Nathanael Philipp"
+__copyright__ = "Copyright 2018-2022 J. Nathanael Philipp (jnphilipp)"
+__license__ = "GPL"
+__maintainer__ = __author__
+__email__ = "nathanael@philipp.land"
+__version__ = "0.1.2"
+__version_info__ = tuple(int(part) for part in __version__.split("."))
 
 default_app_config = "oai_pmh.apps.OAIPMHConfig"
