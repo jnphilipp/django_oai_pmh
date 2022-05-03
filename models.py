@@ -168,7 +168,7 @@ class DCRecord(models.Model):
         Header, models.CASCADE, primary_key=True, verbose_name=_("Header")
     )
     identifier = models.TextField(verbose_name=" dc:identifier")
-    date = models.DateTimeField(auto_now=True, verbose_name=" dc:date")
+    date = models.TextField(verbose_name=" dc:date")
     title = models.TextField(blank=True, null=True, verbose_name=" dc:title")
     creator = models.TextField(blank=True, null=True, verbose_name=" dc:creator")
     subject = models.TextField(blank=True, null=True, verbose_name=" dc:subject")
@@ -198,7 +198,7 @@ class DCRecord(models.Model):
                 identifier = child.text.strip()
             else:
                 if tag_name in defaults and tag_name in ["contributor", "relation"]:
-                    defaults[tag_name] += f";{child.text.strip()}"
+                    defaults[tag_name] += f"\n{child.text.strip()}"
                 else:
                     defaults[tag_name] = child.text.strip()
 
