@@ -101,7 +101,7 @@ def list_request_attributes(
 
 
 @register.simple_tag
-def multiple_tags(string, tag, delimiter=";"):
+def multiple_tags(string, tag, delimiter="\n"):
     """Split string and format as multile HTML tags."""
     tags = [f"<{tag}>{s}</{tag}>" for s in string.split(delimiter)]
     return mark_safe("\n".join(tags))
