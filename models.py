@@ -197,10 +197,11 @@ class DCRecord(models.Model):
             if tag_name == "identifier":
                 identifier = child.text.strip()
             else:
-                if tag_name in defaults and tag_name in ["contributor", "relation"]:
-                    defaults[tag_name] += f"\n{child.text.strip()}"
-                else:
-                    defaults[tag_name] = child.text.strip()
+                if child.text:
+                    if tag_name in defaults and tag_name in ["contributor", "relation"]:
+                        defaults[tag_name] += f"\n{child.text.strip()}"
+                    else:
+                        defaults[tag_name] = child.text.strip()
 
         if identifier is None:
             return None, False
