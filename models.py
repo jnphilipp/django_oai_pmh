@@ -76,7 +76,7 @@ class Header(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     identifier = models.TextField(unique=True, verbose_name=_("Identifier"))
-    timestamp = models.DateTimeField(auto_now=True, verbose_name=_("Timestamp"))
+    timestamp = models.DateTimeField(verbose_name=_("Timestamp"))
     deleted = models.BooleanField(default=False, verbose_name=_("Deleted"))
     metadata_formats = models.ManyToManyField(
         MetadataFormat,
