@@ -94,9 +94,9 @@ def list_request_attributes(
     if until_timestamp:
         attributes += f' until="{until_timestamp.strftime(timestamp_format)}"'
     if set_spec:
-        attributes += ' set="{escape(set_spec)}"'
+        attributes += f' set="{escape(set_spec)}"'
     if resumption_token:
-        attributes += ' resumptionToken="{escape(resumption_token)}"'
+        attributes += f' resumptionToken="{escape(resumption_token)}"'
     return mark_safe(attributes)
 
 
