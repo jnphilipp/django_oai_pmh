@@ -57,9 +57,8 @@ def admin_emails():
 @register.simple_tag
 def base_url():
     """Get OAI-PMH base url."""
-    url = settings.ALLOWED_HOSTS[0] if len(settings.ALLOWED_HOSTS) >= 1 else ""
-    return f"{url}{reverse('oai2:oai2')}"
-
+    url = settings.BASE_URL if settings.BASE_URL else ""
+    return f"{url}"
 
 @register.simple_tag
 def list_request_attributes(
