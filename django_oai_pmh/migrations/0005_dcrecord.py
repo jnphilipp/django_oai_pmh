@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('oai_pmh', '0004_resumptiontoken'),
+        ('django_oai_pmh', '0004_resumptiontoken'),
     ]
 
     operations = [
@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated at')),
-                ('header', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='oai_pmh.header', verbose_name='Header')),
+                ('header', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='django_oai_pmh.header', verbose_name='Header')),
                 ('identifier', models.TextField(verbose_name=' dc:identifier')),
                 ('date', models.DateTimeField(auto_now=True, verbose_name=' dc:date')),
                 ('title', models.TextField(blank=True, null=True, verbose_name=' dc:title')),

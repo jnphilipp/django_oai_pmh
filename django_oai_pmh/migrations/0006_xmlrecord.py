@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('oai_pmh', '0005_oaidc_metadataformat'),
+        ('django_oai_pmh', '0005_oaidc_metadataformat'),
     ]
 
     operations = [
@@ -18,8 +18,8 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated at')),
                 ('xml_metadata', models.TextField(verbose_name='XML metadta')),
-                ('header', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='xmlrecords', to='oai_pmh.header', verbose_name='Header')),
-                ('metadata_prefix', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='xmlrecords', to='oai_pmh.metadataformat', verbose_name='Metadata prefix')),
+                ('header', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='xmlrecords', to='django_oai_pmh.header', verbose_name='Header')),
+                ('metadata_prefix', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='xmlrecords', to='django_oai_pmh.metadataformat', verbose_name='Metadata prefix')),
             ],
             options={
                 'verbose_name': 'XML record',

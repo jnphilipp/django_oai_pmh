@@ -19,7 +19,6 @@
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.urls import reverse
 
 
 USER_SETTINGS = getattr(settings, "OAI_PMH", {})
@@ -33,12 +32,7 @@ else:
 if "BASE_URL" in USER_SETTINGS:
     BASE_URL = USER_SETTINGS["BASE_URL"]
 else:
-    host = (
-        USER_SETTINGS["ALLOWED_HOSTS"][0]
-        if len(USER_SETTINGS["ALLOWED_HOSTS"]) >= 1
-        else ""
-    )
-    BASE_URL = f"{host}{reverse('oai2:oai2')}"
+    raise ImproperlyConfigured("No value for BASE_URL.")
 
 NUM_PER_PAGE = 100
 if "NUM_PER_PAGE" in USER_SETTINGS:

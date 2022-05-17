@@ -25,4 +25,4 @@ __email__ = "nathanael@philipp.land"
 __version__ = "0.2.0"
 __version_info__ = tuple(int(part) for part in __version__.split("."))
 
-default_app_config = "oai_pmh.apps.OAIPMHConfig"
+default_app_config = "django_oai_pmh.apps.OAIPMHConfig"

@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('oai_pmh', '0001_initial'),
+        ('django_oai_pmh', '0001_initial'),
     ]
 
     operations = [

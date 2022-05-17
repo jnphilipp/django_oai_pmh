@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('oai_pmh', '0003_header'),
+        ('django_oai_pmh', '0003_header'),
     ]
 
     operations = [
@@ -23,8 +23,8 @@ class Migration(migrations.Migration):
                 ('token', models.TextField(unique=True, verbose_name='Token')),
                 ('from_timestamp', models.DateTimeField(blank=True, null=True, verbose_name='From timestamp')),
                 ('until_timestamp', models.DateTimeField(blank=True, null=True, verbose_name='Until timestamp')),
-                ('metadata_prefix', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='oai_pmh.metadataformat', verbose_name='Metadata prefix')),
-                ('set_spec', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='oai_pmh.set', verbose_name='Set spec')),
+                ('metadata_prefix', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='django_oai_pmh.metadataformat', verbose_name='Metadata prefix')),
+                ('set_spec', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='django_oai_pmh.set', verbose_name='Set spec')),
             ],
             options={
                 'verbose_name': 'Resumption token',

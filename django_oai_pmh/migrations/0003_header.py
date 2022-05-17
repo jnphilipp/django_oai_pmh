@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('oai_pmh', '0002_set'),
+        ('django_oai_pmh', '0002_set'),
     ]
 
     operations = [
@@ -19,8 +19,8 @@ class Migration(migrations.Migration):
                 ('identifier', models.TextField(unique=True, verbose_name='Identifier')),
                 ('timestamp', models.DateTimeField(auto_now=True, verbose_name='Timestamp')),
                 ('deleted', models.BooleanField(default=False, verbose_name='Deleted')),
-                ('metadata_formats', models.ManyToManyField(blank=True, related_name='identifiers', to='oai_pmh.MetadataFormat', verbose_name='Metadata format')),
-                ('sets', models.ManyToManyField(blank=True, related_name='headers', to='oai_pmh.Set', verbose_name='Set')),
+                ('metadata_formats', models.ManyToManyField(blank=True, related_name='identifiers', to='django_oai_pmh.MetadataFormat', verbose_name='Metadata format')),
+                ('sets', models.ManyToManyField(blank=True, related_name='headers', to='django_oai_pmh.Set', verbose_name='Set')),
             ],
             options={
                 'verbose_name': 'Header',
