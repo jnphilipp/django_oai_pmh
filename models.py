@@ -19,14 +19,15 @@
 
 import re
 
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from lxml import etree
-from typing import Optional, Tuple, Type, TypeVar
+from typing import Dict, List, Optional, Tuple, Type, TypeVar
 
 
 class MetadataFormat(models.Model):
-    """MetadataFormat ORM Model."""
+    """MetadataFormat Model."""
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
@@ -48,7 +49,7 @@ class MetadataFormat(models.Model):
 
 
 class Set(models.Model):
-    """Set ORM Model."""
+    """Set Model."""
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
@@ -70,13 +71,13 @@ class Set(models.Model):
 
 
 class Header(models.Model):
-    """Header ORM Model."""
+    """Header Model."""
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     identifier = models.TextField(unique=True, verbose_name=_("Identifier"))
-    timestamp = models.DateTimeField(verbose_name=_("Timestamp"))
+    timestamp = models.DateTimeField(auto_now=True, verbose_name=_("Timestamp"))
     deleted = models.BooleanField(default=False, verbose_name=_("Deleted"))
     metadata_formats = models.ManyToManyField(
         MetadataFormat,
@@ -104,7 +105,7 @@ class Header(models.Model):
 
 
 class ResumptionToken(models.Model):
-    """ResumptionToken ORM Model."""
+    """ResumptionToken Model."""
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
@@ -157,7 +158,7 @@ class ResumptionToken(models.Model):
 
 
 class DCRecord(models.Model):
-    """DCRecord ORM Model."""
+    """DCRecord Model."""
 
     T = TypeVar("T", bound="DCRecord", covariant=True)
 
@@ -167,47 +168,40 @@ class DCRecord(models.Model):
     header = models.OneToOneField(
         Header, models.CASCADE, primary_key=True, verbose_name=_("Header")
     )
-    identifier = models.TextField(verbose_name=" dc:identifier")
-    date = models.TextField(verbose_name=" dc:date")
-    title = models.TextField(blank=True, null=True, verbose_name=" dc:title")
-    creator = models.TextField(blank=True, null=True, verbose_name=" dc:creator")
-    subject = models.TextField(blank=True, null=True, verbose_name=" dc:subject")
-    description = models.TextField(
-        blank=True, null=True, verbose_name=" dc:description"
+
+    title = ArrayField(models.TextField(verbose_name=" dc:title"), null=True)
+    creator = ArrayField(models.TextField(verbose_name=" dc:creator"), null=True)
+    subject = ArrayField(models.TextField(verbose_name=" dc:subject"), null=True)
+    description = ArrayField(
+        models.TextField(verbose_name=" dc:description"), null=True
     )
-    publisher = models.TextField(blank=True, null=True, verbose_name=" dc:publisher")
-    contributor = models.TextField(
-        blank=True, null=True, verbose_name=" dc:contributor"
+    publisher = ArrayField(models.TextField(verbose_name=" dc:publisher"), null=True)
+    contributor = ArrayField(
+        models.TextField(verbose_name=" dc:contributor"), null=True
     )
-    type = models.TextField(blank=True, null=True, verbose_name=" dc:type")
-    format = models.TextField(blank=True, null=True, verbose_name=" dc:format")
-    source = models.TextField(blank=True, null=True, verbose_name=" dc:source")
-    language = models.TextField(blank=True, null=True, verbose_name=" dc:language")
-    relation = models.TextField(blank=True, null=True, verbose_name=" dc:relation")
-    coverage = models.TextField(blank=True, null=True, verbose_name=" dc:coverage")
-    rights = models.TextField(blank=True, null=True, verbose_name=" dc:rights")
+    date = ArrayField(models.TextField(verbose_name=" dc:date"), null=True)
+    type = ArrayField(models.TextField(verbose_name=" dc:type"), null=True)
+    format = ArrayField(models.TextField(verbose_name=" dc:format"), null=True)
+    identifier = ArrayField(models.TextField(verbose_name=" dc:identifier"), null=True)
+    source = ArrayField(models.TextField(verbose_name=" dc:source"), null=True)
+    language = ArrayField(models.TextField(verbose_name=" dc:language"), null=True)
+    relation = ArrayField(models.TextField(verbose_name=" dc:relation"), null=True)
+    coverage = ArrayField(models.TextField(verbose_name=" dc:coverage"), null=True)
+    rights = ArrayField(models.TextField(verbose_name=" dc:rights"), null=True)
 
     @classmethod
     def from_xml(cls: Type[T], data: str, header: Header) -> Tuple[Optional[T], bool]:
         """Create DCRecord from xml string."""
-        identifier = None
-        defaults = {}
+        defaults: Dict[str, List[str]] = {}
         for child in etree.XML(data):
+            if not child.text:
+                continue
             tag_name = re.sub(r"\{[^\}]+\}", "", child.tag)
-            if tag_name == "identifier":
-                identifier = child.text.strip()
-            else:
-                if child.text:
-                    if tag_name in defaults and tag_name in ["contributor", "relation"]:
-                        defaults[tag_name] += f"\n{child.text.strip()}"
-                    else:
-                        defaults[tag_name] = child.text.strip()
+            if tag_name not in defaults:
+                defaults[tag_name] = []
+            defaults[tag_name].append(child.text.strip())
 
-        if identifier is None:
-            return None, False
-        return cls.objects.update_or_create(
-            header=header, identifier=identifier, defaults=defaults
-        )
+        return cls.objects.update_or_create(header=header, defaults=defaults)
 
     def __str__(self: T) -> str:
         """Name."""
@@ -222,7 +216,7 @@ class DCRecord(models.Model):
 
 
 class XMLRecord(models.Model):
-    """XMLRecord ORM Model."""
+    """XMLRecord Model."""
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))

@@ -25,7 +25,73 @@ from io import BytesIO, StringIO
 from lxml import etree
 
 from . import views
-from .models import Header, MetadataFormat, Set
+from .models import DCRecord, Header, MetadataFormat, Set
+
+
+class DCRecordTestCase(TestCase):
+    def test_from_xml(self):
+        header = Header.objects.create(identifier="test:1")
+        header.metadata_formats.add(MetadataFormat.objects.get(prefix="oai_dc"))
+
+        dc_record, created = DCRecord.from_xml(
+            """<?xml version="1.0"?>
+<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+  <dc:title xml:lang="en-US">Time course and hazard function: A distributional analysis of fixation duration in reading</dc:title>
+  <dc:creator>Feng, Gary</dc:creator>
+  <dc:description xml:lang="en-US">Reading processes affect not only the mean of fixation duration but also its distribution function. This paper introduces a set of hypotheses that link the timing and strength of a reading process to the hazard function of a fixation duration distribution. Analyses based on large corpora of reading eye movements show a surprisingly robust hazard function across languages, age, individual differences, and a number of processing variables. The data suggest that eye movements are generated stochastically based on a stereotyped time course that is independent of reading variables. High-level reading processes, however, modulate eye movement programming by increasing or decreasing the momentary saccade rate during a narrow time window. Implications to theories and analyses of reading eye movement are discussed.PS: The author wishes to thank Alan Kennedy for sharing the Dundee English reading eye movement corpus. See the Methods and References sections in the article for more details.</dc:description>
+  <dc:publisher xml:lang="en-US">The Mind Research Repository (beta)</dc:publisher>
+  <dc:date>2013-03-17</dc:date>
+  <dc:type>info:eu-repo/semantics/article</dc:type>
+  <dc:type>info:eu-repo/semantics/publishedVersion</dc:type>
+  <dc:format>application/pdf</dc:format>
+  <dc:identifier>11022/0000-0000-1F0B-3</dc:identifier>
+  <dc:source xml:lang="en-US">The Mind Research Repository (beta); No 1 (2013)</dc:source>
+  <dc:language>eng</dc:language>
+  <dc:relation>https://repo.data.saw-leipzig.de/resources?identifier=mrr/11022000000001F0B3/Feng2009_1.0.tar.gz</dc:relation>
+  <dc:relation>https://repo.data.saw-leipzig.de/resources?identifier=mrr/11022000000001F0B3/paper.pdf</dc:relation>
+  <dc:relation>https://repo.data.saw-leipzig.de/resources?identifier=mrr/11022000000001F0B3</dc:relation>
+</oai_dc:dc>""",
+            header,
+        )
+        self.assertTrue(created)
+
+        self.assertEqual(
+            [
+                "Time course and hazard function: A distributional analysis of fixation "
+                + "duration in reading"
+            ],
+            dc_record.title,
+        )
+        self.assertEqual(["Feng, Gary"], dc_record.creator)
+        self.assertEqual(
+            [
+                "Reading processes affect not only the mean of fixation duration but also its distribution function. This paper introduces a set of hypotheses that link the timing and strength of a reading process to the hazard function of a fixation duration distribution. Analyses based on large corpora of reading eye movements show a surprisingly robust hazard function across languages, age, individual differences, and a number of processing variables. The data suggest that eye movements are generated stochastically based on a stereotyped time course that is independent of reading variables. High-level reading processes, however, modulate eye movement programming by increasing or decreasing the momentary saccade rate during a narrow time window. Implications to theories and analyses of reading eye movement are discussed.PS: The author wishes to thank Alan Kennedy for sharing the Dundee English reading eye movement corpus. See the Methods and References sections in the article for more details."
+            ],
+            dc_record.description,
+        )
+        self.assertEqual(["The Mind Research Repository (beta)"], dc_record.publisher)
+        self.assertEqual(["2013-03-17"], dc_record.date)
+        self.assertEqual(
+            [
+                "info:eu-repo/semantics/article",
+                "info:eu-repo/semantics/publishedVersion",
+            ],
+            dc_record.type,
+        )
+        self.assertEqual(["application/pdf"], dc_record.format)
+        self.assertEqual(["11022/0000-0000-1F0B-3"], dc_record.identifier)
+        self.assertEqual(
+            ["The Mind Research Repository (beta); No 1 (2013)"], dc_record.source
+        )
+        self.assertEqual(["eng"], dc_record.language)
+        self.assertEqual(
+            [
+                "https://repo.data.saw-leipzig.de/resources?identifier=mrr/11022000000001F0B3/Feng2009_1.0.tar.gz",
+                "https://repo.data.saw-leipzig.de/resources?identifier=mrr/11022000000001F0B3/paper.pdf",
+                "https://repo.data.saw-leipzig.de/resources?identifier=mrr/11022000000001F0B3",
+            ],
+            dc_record.relation,
+        )
 
 
 class IdentifyTestCase(TestCase):
@@ -354,3 +420,54 @@ class ListSetTestCase(TestCase):
         xmlschema = etree.XMLSchema(etree.parse(StringIO(r.text)))
         doc = etree.parse(BytesIO(response.content))
         self.assertTrue(xmlschema.validate(doc))
+
+
+class GetRecordTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+        self.header = Header.objects.create(identifier="test:1")
+        self.header.metadata_formats.add(MetadataFormat.objects.get(prefix="oai_dc"))
+
+        self.dc_record, created = DCRecord.from_xml(
+            """<?xml version="1.0"?>
+<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+  <dc:title xml:lang="en-US">Time course and hazard function: A distributional analysis of fixation duration in reading</dc:title>
+  <dc:creator>Feng, Gary</dc:creator>
+  <dc:description xml:lang="en-US">Reading processes affect not only the mean of fixation duration but also its distribution function. This paper introduces a set of hypotheses that link the timing and strength of a reading process to the hazard function of a fixation duration distribution. Analyses based on large corpora of reading eye movements show a surprisingly robust hazard function across languages, age, individual differences, and a number of processing variables. The data suggest that eye movements are generated stochastically based on a stereotyped time course that is independent of reading variables. High-level reading processes, however, modulate eye movement programming by increasing or decreasing the momentary saccade rate during a narrow time window. Implications to theories and analyses of reading eye movement are discussed.PS: The author wishes to thank Alan Kennedy for sharing the Dundee English reading eye movement corpus. See the Methods and References sections in the article for more details.</dc:description>
+  <dc:publisher xml:lang="en-US">The Mind Research Repository (beta)</dc:publisher>
+  <dc:date>2013-03-17</dc:date>
+  <dc:type>info:eu-repo/semantics/article</dc:type>
+  <dc:type>info:eu-repo/semantics/publishedVersion</dc:type>
+  <dc:format>application/pdf</dc:format>
+  <dc:identifier>11022/0000-0000-1F0B-3</dc:identifier>
+  <dc:source xml:lang="en-US">The Mind Research Repository (beta); No 1 (2013)</dc:source>
+  <dc:language>eng</dc:language>
+  <dc:relation>https://repo.data.saw-leipzig.de/resources?identifier=mrr/11022000000001F0B3/Feng2009_1.0.tar.gz</dc:relation>
+  <dc:relation>https://repo.data.saw-leipzig.de/resources?identifier=mrr/11022000000001F0B3/paper.pdf</dc:relation>
+  <dc:relation>https://repo.data.saw-leipzig.de/resources?identifier=mrr/11022000000001F0B3</dc:relation>
+</oai_dc:dc>""",
+            self.header,
+        )
+
+    @override_settings(
+        ADMINS=[("jnphilipp", "nathanael@philipp.land")], ALLOWED_HOSTS=("test.com")
+    )
+    def test_get_record(self):
+        request = self.factory.get(
+            "/oai2?verb=GetRecord&identifier=test:1&metadataPrefix=oai_dc"
+        )
+        request.user = AnonymousUser()
+        response = views.oai2(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(
+            re.search(
+                r"<error code[^>]+>[^<]+</error>", response.content.decode("utf8")
+            )
+        )
+
+        # r = requests.get("http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd")
+        # self.assertEqual(r.status_code, 200)
+        # xmlschema = etree.XMLSchema(etree.parse(StringIO(r.text)))
+        # doc = etree.parse(BytesIO(response.content))
+        # self.assertTrue(xmlschema.validate(doc))

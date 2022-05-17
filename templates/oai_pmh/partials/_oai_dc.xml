@@ -1,20 +1,50 @@
 {% load oai_pmh %}
 <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
     {% if header.dcrecord %}
-        {% if header.dcrecord.title %}<dc:title>{{ header.dcrecord.title }}</dc:title>{% endif %}
-        {% if header.dcrecord.creator %}<dc:creator>{{ header.dcrecord.creator }}</dc:creator>{% endif %}
-        {% if header.dcrecord.subject %}<dc:subject>{{ header.dcrecord.subject }}</dc:subject>{% endif %}
-        {% if header.dcrecord.description %}<dc:description>{{ header.dcrecord.description }}</dc:description>{% endif %}
-        {% if header.dcrecord.publisher %}<dc:publisher>{{ header.dcrecord.publisher }}</dc:publisher>{% endif %}
-        {% if header.dcrecord.contributor %}{% multiple_tags header.dcrecord.contributor "dc:contributor" %}{% endif %}
-        {% if header.dcrecord.date %}<dc:date>{{ header.dcrecord.date }}</dc:date>{% endif %}
-        {% if header.dcrecord.type %}<dc:type>{{ header.dcrecord.type }}</dc:type>{% endif %}
-        {% if header.dcrecord.format %}<dc:format>{{ header.dcrecord.format }}</dc:format>{% endif %}
-        {% if header.dcrecord.identifier %}<dc:identifier>{{ header.dcrecord.identifier }}</dc:identifier>{% endif %}
-        {% if header.dcrecord.source %}<dc:source>{{ header.dcrecord.source }}</dc:source>{% endif %}
-        {% if header.dcrecord.language %}<dc:language>{{ header.dcrecord.language }}</dc:language>{% endif %}
-        {% if header.dcrecord.relation %}{% multiple_tags header.dcrecord.relation "dc:relation" %}{% endif %}
-        {% if header.dcrecord.coverage %}<dc:coverage>{{ header.dcrecord.coverage }}</dc:coverage>{% endif %}
-        {% if header.dcrecord.rights %}<dc:rights>{{ header.dcrecord.rights }}</dc:rights>{% endif %}
+        {% for title in header.dcrecord.title %}
+            <dc:title>{{ title }}</dc:title>
+        {% endfor %}
+        {% for creator in header.dcrecord.creator %}
+            <dc:creator>{{ creator }}</dc:creator>
+        {% endfor %}
+        {% for subject in header.dcrecord.subject %}
+            <dc:subject>{{ subject }}</dc:subject>
+        {% endfor %}
+        {% for description in header.dcrecord.description %}
+            <dc:description>{{ description }}</dc:description>
+        {% endfor %}
+        {% for publisher in header.dcrecord.publisher %}
+            <dc:publisher>{{ publisher }}</dc:publisher>
+        {% endfor %}
+        {% for contributor in header.dcrecord.contributor %}
+            <dc:contributor>{{ contributor }}</dc:contributor>
+        {% endfor %}
+        {% for date in header.dcrecord.date %}
+            <dc:date>{{ date }}</dc:date>
+        {% endfor %}
+        {% for type in header.dcrecord.type %}
+            <dc:type>{{ type }}</dc:type>
+        {% endfor %}
+        {% for format in header.dcrecord.format %}
+            <dc:format>{{ format }}</dc:format>
+        {% endfor %}
+        {% for identifier in header.dcrecord.identifier %}
+            <dc:identifier>{{ identifier }}</dc:identifier>
+        {% endfor %}
+        {% for source in header.dcrecord.source %}
+            <dc:source>{{ source }}</dc:source>
+        {% endfor %}
+        {% for language in header.dcrecord.language %}
+            <dc:language>{{ language }}</dc:language>
+        {% endfor %}
+        {% for relation in header.dcrecord.relation %}
+            <dc:relation>{{ relation }}</dc:relation>
+        {% endfor %}
+        {% for coverage in header.dcrecord.coverage %}
+            <dc:coverage>{{ coverage }}</dc:coverage>
+        {% endfor %}
+        {% for rights in header.dcrecord.rights %}
+            <dc:rights>{{ rights }}</dc:rights>
+        {% endfor %}
     {% endif %}
 </oai_dc:dc>
