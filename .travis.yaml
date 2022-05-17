@@ -1,0 +1,32 @@
+os: linux
+language: python
+
+services:
+  - postgresql
+
+python:
+  - 3.7
+  - 3.8
+  - 3.9
+  - 3.10
+
+env:
+  - DJANGO_VERSION=3.2
+  - DJANGO_VERSION=4.0
+
+before_script:
+  - psql -c "CREATE DATABASE dj_oai_pmh;" -U postgres
+
+install:
+  - pip install -q Django==$DJANGO_VERSION
+  - pip install -r test-requirements.txt
+  - pip install -r requirements.txt
+  - django-admin startproject example .
+  - echo "INSTALLED_APPS.append('django_oai_pmh')" >> example/settings.py
+  - echo "DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'" >> example/settings.py
+  - echo "DATABASES['default']['NAME'] = 'dj_oai_pmh'" >> example/settings.py
+  - echo "DATABASES['default']['USER'] = 'postgres'" >> example/settings.py
+  - echo "OAI_PMH = {'REPOSITORY_NAME': 'OAI-PMH test', 'BASE_URL': 'localhost:8000/oai2'}" >> example/settings.py
+
+script:
+  - python manage.py test
