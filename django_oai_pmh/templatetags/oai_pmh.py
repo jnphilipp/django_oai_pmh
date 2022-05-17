@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with django_oai_pmh. If not, see <http://www.gnu.org/licenses/>.
-"""OAI-PMH Django app templatetags."""
+"""OAI-PMH Django app oai_pmh templatetag."""
 
 from django.conf import settings
 from django.template import Library
