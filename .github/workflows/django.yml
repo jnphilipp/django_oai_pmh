@@ -1,0 +1,45 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:12.3-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: dj_aoi_pmh
+        ports:
+          - 5432:5432
+        options: --mount type=tmpfs,destination=/var/lib/postgresql/data --health-cmd pg_isready --health-
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9, 3.10]
+        django-version: [3.2, 4.0]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install Django==${{ matrix.django-version }}
+          pip install -r test-requirements.txt
+          pip install -r requirements.txt
+          django-admin startproject example .
+          echo "INSTALLED_APPS.append('django_oai_pmh')" >> example/settings.py
+          echo "DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'" >> example/settings.py
+          echo "DATABASES['default']['NAME'] = 'dj_oai_pmh'" >> example/settings.py
+          echo "DATABASES['default']['USER'] = 'postgres'" >> example/settings.py
+          echo "DATABASES['default']['PASSWORD'] = 'postgres'" >> example/settings.py
+          echo "OAI_PMH = {'REPOSITORY_NAME': 'OAI-PMH test', 'BASE_URL': 'localhost:8000/oai2'}" >> example/settings.py
+      - name: Run Tests
+        run: |
+          python manage.py test
