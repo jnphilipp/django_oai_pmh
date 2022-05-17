@@ -1,2 +1,2 @@
 lxml~=4.8.0
-psycopg2~=2.9.0
+psycopg2-binary~=2.9.0
