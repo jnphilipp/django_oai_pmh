@@ -15,11 +15,6 @@ jobs:
           POSTGRES_DB: dj_aoi_pmh
         ports:
           - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     strategy:
       matrix:Error: Exit code 125 returned from process
         python-version: [3.7, 3.8, 3.9, 3.10]
