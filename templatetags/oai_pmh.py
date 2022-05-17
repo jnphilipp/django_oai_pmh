@@ -19,7 +19,6 @@
 
 from django.conf import settings
 from django.template import Library
-from django.urls import reverse
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from html import escape

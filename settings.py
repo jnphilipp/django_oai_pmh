@@ -33,7 +33,12 @@ else:
 if "BASE_URL" in USER_SETTINGS:
     BASE_URL = USER_SETTINGS["BASE_URL"]
 else:
-    BASE_URL = f"{USER_SETTINGS['ALLOWED_HOSTS'][0] if len(USER_SETTINGS['ALLOWED_HOSTS']) >= 1 else ""}{reverse('oai2:oai2')}"
+    host = (
+        USER_SETTINGS["ALLOWED_HOSTS"][0]
+        if len(USER_SETTINGS["ALLOWED_HOSTS"]) >= 1
+        else ""
+    )
+    BASE_URL = f"{host}{reverse('oai2:oai2')}"
 
 NUM_PER_PAGE = 100
 if "NUM_PER_PAGE" in USER_SETTINGS:
