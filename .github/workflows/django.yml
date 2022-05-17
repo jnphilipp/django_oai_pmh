@@ -32,12 +32,14 @@ jobs:
           pip install Django~=${{ matrix.django-version }}
           pip install -r test-requirements.txt
           pip install -r requirements.txt
-          django-admin startproject example .
+          django-admin.py startproject example .
           echo "INSTALLED_APPS.append('django_oai_pmh')" >> example/settings.py
           echo "DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'" >> example/settings.py
           echo "DATABASES['default']['NAME'] = 'dj_oai_pmh'" >> example/settings.py
           echo "DATABASES['default']['USER'] = 'postgres'" >> example/settings.py
           echo "DATABASES['default']['PASSWORD'] = 'postgres'" >> example/settings.py
+          echo "DATABASES['default']['HOST'] = 'localhost'" >> example/settings.py
+          echo "DATABASES['default']['PORT'] = '5432'" >> example/settings.py
           echo "OAI_PMH = {'REPOSITORY_NAME': 'OAI-PMH test', 'BASE_URL': 'localhost:8000/oai2'}" >> example/settings.py
       - name: Run Tests
         run: |
