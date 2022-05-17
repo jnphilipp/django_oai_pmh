@@ -28,8 +28,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install Django==${{ matrix.django-version }}
+          python -m pip install --upgrade pip wheel
+          pip install Django~=${{ matrix.django-version }}
           pip install -r test-requirements.txt
           pip install -r requirements.txt
           django-admin startproject example .
