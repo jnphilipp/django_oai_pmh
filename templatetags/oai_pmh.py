@@ -26,7 +26,7 @@ from html import escape
 from os import urandom
 
 from ..models import MetadataFormat, ResumptionToken, Set
-from ..settings import REPOSITORY_NAME
+from ..settings import REPOSITORY_NAME, BASE_URL
 
 
 register = Library()
@@ -57,8 +57,8 @@ def admin_emails():
 @register.simple_tag
 def base_url():
     """Get OAI-PMH base url."""
-    url = settings.BASE_URL if settings.BASE_URL else ""
-    return f"{url}"
+    return mark_safe(BASE_URL)
+
 
 @register.simple_tag
 def list_request_attributes(
