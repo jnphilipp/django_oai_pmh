@@ -48,7 +48,7 @@ def oai2(request):
     if "verb" in params:
         verb = params.pop("verb")[-1]
         if verb == "GetRecord":
-            template = "oai_pmh/getrecord.xml"
+            template = "django_oai_pmh/getrecord.xml"
 
             if "metadataPrefix" in params:
                 metadata_prefix = params.pop("metadataPrefix")
@@ -77,10 +77,10 @@ def oai2(request):
                 errors.append(_error("badArgument", "metadataPrefix"))
             _check_bad_arguments(params, errors)
         elif verb == "Identify":
-            template = "oai_pmh/identify.xml"
+            template = "django_oai_pmh/identify.xml"
             _check_bad_arguments(params, errors)
         elif verb == "ListIdentifiers":
-            template = "oai_pmh/listidentifiers.xml"
+            template = "django_oai_pmh/listidentifiers.xml"
 
             if "resumptionToken" in params:
                 header_list = Header.objects.all()
@@ -141,7 +141,7 @@ def oai2(request):
                 errors.append(_error("badArgument", "metadataPrefix"))
             _check_bad_arguments(params, errors)
         elif verb == "ListMetadataFormats":
-            template = "oai_pmh/listmetadataformats.xml"
+            template = "django_oai_pmh/listmetadataformats.xml"
             metadataformats = MetadataFormat.objects.all()
 
             if "identifier" in params:
@@ -159,7 +159,7 @@ def oai2(request):
                     errors.append(_error("noMetadataFormats"))
             _check_bad_arguments(params, errors)
         elif verb == "ListRecords":
-            template = "oai_pmh/listrecords.xml"
+            template = "django_oai_pmh/listrecords.xml"
 
             if "resumptionToken" in params:
                 header_list = Header.objects.all()
@@ -218,7 +218,7 @@ def oai2(request):
             else:
                 errors.append(_error("badArgument", "metadataPrefix"))
         elif verb == "ListSets":
-            template = "oai_pmh/listsets.xml"
+            template = "django_oai_pmh/listsets.xml"
 
             if not Set.objects.all().exists():
                 errors.append(_error("noSetHierarchy"))
@@ -240,7 +240,7 @@ def oai2(request):
 
     return render(
         request,
-        template if not errors else "oai_pmh/error.xml",
+        template if not errors else "django_oai_pmh/error.xml",
         locals(),
         content_type="text/xml",
     )
