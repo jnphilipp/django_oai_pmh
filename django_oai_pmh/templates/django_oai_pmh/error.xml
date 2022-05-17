@@ -1,4 +1,4 @@
-{% extends "oai_pmh/base.xml" %}
+{% extends "django_oai_pmh/base.xml" %}
 
 
 {% block content %}
