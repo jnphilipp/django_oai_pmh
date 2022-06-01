@@ -30,7 +30,7 @@ def read_file(name):
 
 setup(
     name="django_oai_pmh",
-    version="0.2.0",
+    version="0.3.0",
     description="Add OAI-PMH endpoint to Django.",
     author="J. Nathanael Philipp",
     author_email="nathanael@philipp.land",
