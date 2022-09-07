@@ -17,4 +17,4 @@ repos:
     rev: v0.971
     hooks:
     -   id: mypy
-        exclude: migrations/
+        exclude: (migrations/|tests)
