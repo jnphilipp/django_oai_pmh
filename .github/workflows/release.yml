@@ -1,10 +1,9 @@
-name: Release
+name: Make a release
 
 on:
   push:
     tags:
       - "*"
-  workflow_dispatch:
 
 jobs:
   build_deb:
