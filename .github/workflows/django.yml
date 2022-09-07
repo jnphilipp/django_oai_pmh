@@ -23,7 +23,7 @@ jobs:
       - name: Flake8
         run: |
           python -m pip install flake8
-          flake8 . --max-line-length=88 --extend-ignore=E203 --extend-exclude="migrations,tests" --count --statistics
+          flake8 . --max-line-length=88 --extend-ignore=E203 --extend-exclude="migrations,tests.py" --count --statistics
       - name: mypy
         run: |
           python -m pip install mypy
