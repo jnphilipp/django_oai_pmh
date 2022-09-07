@@ -19,7 +19,7 @@ changelog.latest.md:
 			elif [ $$i -lt $${#TAGS[@]} ]; then \
 				echo -e "$${TAGS[$$i]}" >> changelog.latest.md; \
 				git log $${TAGS[$$i-1]}..$${TAGS[$$i]} --no-merges --format="  * %h %s"  >> changelog.latest.md; \
+				break; \
 			fi; \
-			break; \
 		done \
 	)
