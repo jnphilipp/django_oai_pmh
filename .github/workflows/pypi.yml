@@ -1,12 +1,12 @@
 name: Upload to PyPI
 
 on:
-  push:
-    branches: [ master ]
+  release:
+    types: [ master ]
   workflow_dispatch:
 
 jobs:
-  build:
+  upload:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,10 +19,10 @@ jobs:
           python -m pip install --upgrade pip wheel
           pip install -r requirements.txt
           python3 -m pip install setuptools twine
-      - name: Build and upload to TestPyPI
+      - name: Build and upload to PyPI
         run: |
           python3 setup.py sdist bdist_wheel
           python3 -m twine upload dist/*
         env:
           TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TWINE_TEST_TOKEN }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PYPI_TOKEN }}
