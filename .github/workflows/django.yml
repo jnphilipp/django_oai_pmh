@@ -23,11 +23,11 @@ jobs:
       - name: Flake8
         run: |
           python -m pip install flake8
-          flake8 . --max-line-length=88 --extend-ignore=E203 --count --statistics
+          flake8 . --max-line-length=88 --extend-ignore=E203 --exclude="(migrations/|tests)" --count --statistics
       - name: mypy
         run: |
           python -m pip install mypy
-          mypy . --ignore-missing-imports
+          mypy . --ignore-missing-imports --exclude migrations/
   test:
     runs-on: ubuntu-latest
     services:
