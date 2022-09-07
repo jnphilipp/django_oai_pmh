@@ -4,6 +4,12 @@ __pycache__
 .mypy_cache
 *.pyc
 
+# Vim
+Session.vim
+
 # SublimeText
 *.sublime-project
 *.sublime-workspace
+
+# Chnagelog
+changelog.latest.md
