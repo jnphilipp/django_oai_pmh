@@ -22,18 +22,18 @@ from django.db import migrations
 
 
 def oaidc(apps, schema_editor):
-    MetadataFormat = apps.get_model('django_oai_pmh', 'MetadataFormat')
+    MetadataFormat = apps.get_model("django_oai_pmh", "MetadataFormat")
     MetadataFormat.objects.create(
-        prefix='oai_dc',
-        schema='https://www.openarchives.org/OAI/2.0/oai_dc.xsd',
-        namespace='https://www.openarchives.org/OAI/2.0/oai_dc/'
+        prefix="oai_dc",
+        schema="https://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+        namespace="https://www.openarchives.org/OAI/2.0/oai_dc/",
     )
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_oai_pmh', '0005_dcrecord'),
+        ("django_oai_pmh", "0005_dcrecord"),
     ]
 
     operations = [

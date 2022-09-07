@@ -25,24 +25,40 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='MetadataFormat',
+            name="MetadataFormat",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated at')),
-                ('prefix', models.TextField(unique=True, verbose_name='Prefix')),
-                ('schema', models.URLField(max_length=2048, verbose_name='Schema')),
-                ('namespace', models.URLField(max_length=2048, verbose_name='Namespace')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created at"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Updated at"),
+                ),
+                ("prefix", models.TextField(unique=True, verbose_name="Prefix")),
+                ("schema", models.URLField(max_length=2048, verbose_name="Schema")),
+                (
+                    "namespace",
+                    models.URLField(max_length=2048, verbose_name="Namespace"),
+                ),
             ],
             options={
-                'verbose_name': 'Metadata format',
-                'verbose_name_plural': 'Metadata formats',
-                'ordering': ('prefix',),
+                "verbose_name": "Metadata format",
+                "verbose_name_plural": "Metadata formats",
+                "ordering": ("prefix",),
             },
         ),
     ]

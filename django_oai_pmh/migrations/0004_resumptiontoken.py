@@ -25,29 +25,77 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_oai_pmh', '0003_header'),
+        ("django_oai_pmh", "0003_header"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ResumptionToken',
+            name="ResumptionToken",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated at')),
-                ('expiration_date', models.DateTimeField(verbose_name='Expiration date')),
-                ('complete_list_size', models.IntegerField(default=0, verbose_name='Complete list size')),
-                ('cursor', models.IntegerField(default=0, verbose_name='Cursor')),
-                ('token', models.TextField(unique=True, verbose_name='Token')),
-                ('from_timestamp', models.DateTimeField(blank=True, null=True, verbose_name='From timestamp')),
-                ('until_timestamp', models.DateTimeField(blank=True, null=True, verbose_name='Until timestamp')),
-                ('metadata_prefix', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='django_oai_pmh.metadataformat', verbose_name='Metadata prefix')),
-                ('set_spec', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='django_oai_pmh.set', verbose_name='Set spec')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created at"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Updated at"),
+                ),
+                (
+                    "expiration_date",
+                    models.DateTimeField(verbose_name="Expiration date"),
+                ),
+                (
+                    "complete_list_size",
+                    models.IntegerField(default=0, verbose_name="Complete list size"),
+                ),
+                ("cursor", models.IntegerField(default=0, verbose_name="Cursor")),
+                ("token", models.TextField(unique=True, verbose_name="Token")),
+                (
+                    "from_timestamp",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="From timestamp"
+                    ),
+                ),
+                (
+                    "until_timestamp",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="Until timestamp"
+                    ),
+                ),
+                (
+                    "metadata_prefix",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="django_oai_pmh.metadataformat",
+                        verbose_name="Metadata prefix",
+                    ),
+                ),
+                (
+                    "set_spec",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="django_oai_pmh.set",
+                        verbose_name="Set spec",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Resumption token',
-                'verbose_name_plural': 'Resumption tokens',
-                'ordering': ('expiration_date',),
+                "verbose_name": "Resumption token",
+                "verbose_name_plural": "Resumption tokens",
+                "ordering": ("expiration_date",),
             },
         ),
     ]

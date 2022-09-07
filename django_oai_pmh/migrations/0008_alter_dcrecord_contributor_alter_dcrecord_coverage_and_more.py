@@ -7,83 +7,143 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_oai_pmh', '0007_alter_dcrecord_date'),
+        ("django_oai_pmh", "0007_alter_dcrecord_date"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dcrecord',
-            name='contributor',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:contributor'), null=True, size=None),
+            model_name="dcrecord",
+            name="contributor",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:contributor"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='coverage',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:coverage'), null=True, size=None),
+            model_name="dcrecord",
+            name="coverage",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:coverage"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='creator',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:creator'), null=True, size=None),
+            model_name="dcrecord",
+            name="creator",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:creator"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='date',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:date'), null=True, size=None),
+            model_name="dcrecord",
+            name="date",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:date"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='description',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:description'), null=True, size=None),
+            model_name="dcrecord",
+            name="description",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:description"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='format',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:format'), null=True, size=None),
+            model_name="dcrecord",
+            name="format",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:format"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='identifier',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:identifier'), null=True, size=None),
+            model_name="dcrecord",
+            name="identifier",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:identifier"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='language',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:language'), null=True, size=None),
+            model_name="dcrecord",
+            name="language",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:language"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='publisher',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:publisher'), null=True, size=None),
+            model_name="dcrecord",
+            name="publisher",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:publisher"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='relation',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:relation'), null=True, size=None),
+            model_name="dcrecord",
+            name="relation",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:relation"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='rights',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:rights'), null=True, size=None),
+            model_name="dcrecord",
+            name="rights",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:rights"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='source',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:source'), null=True, size=None),
+            model_name="dcrecord",
+            name="source",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:source"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='subject',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:subject'), null=True, size=None),
+            model_name="dcrecord",
+            name="subject",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:subject"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='title',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:title'), null=True, size=None),
+            model_name="dcrecord",
+            name="title",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:title"),
+                null=True,
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='dcrecord',
-            name='type',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.TextField(verbose_name=' dc:type'), null=True, size=None),
+            model_name="dcrecord",
+            name="type",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.TextField(verbose_name=" dc:type"),
+                null=True,
+                size=None,
+            ),
         ),
     ]

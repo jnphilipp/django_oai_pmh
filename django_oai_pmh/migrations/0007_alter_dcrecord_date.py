@@ -24,13 +24,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_oai_pmh', '0006_xmlrecord'),
+        ("django_oai_pmh", "0006_xmlrecord"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dcrecord',
-            name='date',
-            field=models.TextField(verbose_name=' dc:date'),
+            model_name="dcrecord",
+            name="date",
+            field=models.TextField(verbose_name=" dc:date"),
         ),
     ]
