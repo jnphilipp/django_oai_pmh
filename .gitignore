@@ -1,15 +1,17 @@
 # Python
 __pycache__
-.venv
+dist
 .mypy_cache
+.venv
+*.egg-info
 *.pyc
-
-# Vim
-Session.vim
 
 # SublimeText
 *.sublime-project
 *.sublime-workspace
+
+# Vim
+Session.vim
 
 # Chnagelog
 changelog.latest.md
