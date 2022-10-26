@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=65.5"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "django_oai_pmh"
+version = "0.3.2"
+authors = [
+    {name = "J. Nathanael Philipp", email = "nathanael@philipp.land"}
+]
+description="Add OAI-PMH endpoint to Django."
+readme = "README.md"
+license = {text = "GPLv3+"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dynamic = ["dependencies"]
+keywords = ["django", "OAI-PMH"]
+
+
+[project.urls]
+"Homepage" = "http://github.com/jnphilipp/django-oai_pmh"
+"Bug Tracker" = "http://github.com/jnphilipp/django-oai_pmh/issues"
+
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
