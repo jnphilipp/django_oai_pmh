@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-# vim: ft=python fileencoding=utf-8 sts=4 sw=4 et:
-# Copyright (C) 2018-2022 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
+# Copyright (C) 2018-2024 J. Nathanael Philipp (jnphilipp) <nathanael@philipp.land>
 #
 # This file is part of django_oai_pmh.
 #
@@ -246,6 +244,5 @@ class XMLRecord(models.Model):
         """Meta."""
 
         ordering = ("header", "metadata_prefix")
-        unique_together = ()
         verbose_name = _("XML record")
         verbose_name_plural = _("XML records")
