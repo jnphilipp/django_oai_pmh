@@ -57,7 +57,7 @@ class Set(models.Model):
     name = models.TextField(verbose_name=_("Name"))
     description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Name."""
         return self.name
 
@@ -91,7 +91,7 @@ class Header(models.Model):
         verbose_name=_("Set"),
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Name."""
         return self.identifier
 
@@ -144,7 +144,7 @@ class ResumptionToken(models.Model):
         verbose_name=_("Set spec"),
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Name."""
         return self.token
 
@@ -231,12 +231,12 @@ class XMLRecord(models.Model):
     )
     xml_metadata = models.TextField(verbose_name=_("XML metadta"))
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         """Save."""
         self.xml_metadata = re.sub(r"^<\?xml[^>]+\?>\s*", "", self.xml_metadata)
         super(XMLRecord, self).save(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Name."""
         return f"{self.metadata_prefix}[{self.header}]"
 

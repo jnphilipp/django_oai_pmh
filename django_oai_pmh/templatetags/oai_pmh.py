@@ -31,7 +31,7 @@ register = Library()
 
 
 @register.filter
-def has_xmlrecord(header, metadata_prefix):
+def has_xmlrecord(header, metadata_prefix) -> bool:
     """Check whether header has XMLRecord with metadata prefix."""
     return header.xmlrecords.filter(metadata_prefix__prefix=metadata_prefix).exists()
 
