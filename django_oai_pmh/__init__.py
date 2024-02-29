@@ -21,7 +21,7 @@ __copyright__ = "Copyright 2018-2024 J. Nathanael Philipp (jnphilipp)"
 __license__ = "GPL"
 __maintainer__ = __author__
 __email__ = "nathanael@philipp.land"
-__version__ = "0.3.4"
+__version__ = "0.3.5"
 __version_info__ = tuple(int(part) for part in __version__.split("."))
 
 default_app_config = "django_oai_pmh.apps.OAIPMHConfig"
