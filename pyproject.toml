@@ -36,8 +36,8 @@ keywords = ["django", "OAI-PMH"]
 
 
 [project.urls]
-"Homepage" = "http://github.com/jnphilipp/django-oai_pmh"
-"Bug Tracker" = "http://github.com/jnphilipp/django-oai_pmh/issues"
+"Homepage" = "http://github.com/jnphilipp/django_oai_pmh"
+"Bug Tracker" = "http://github.com/jnphilipp/django_oai_pmh/issues"
 
 [tool.setuptools]
 include-package-data = true
