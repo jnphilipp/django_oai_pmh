@@ -43,6 +43,7 @@ class Migration(migrations.Migration):
                     models.OneToOneField(
                         on_delete=django.db.models.deletion.CASCADE,
                         primary_key=True,
+                        related_name="dcrecord",
                         serialize=False,
                         to="django_oai_pmh.header",
                         verbose_name="Header",

@@ -165,7 +165,11 @@ class DCRecord(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     header = models.OneToOneField(
-        Header, models.CASCADE, primary_key=True, verbose_name=_("Header")
+        Header,
+        models.CASCADE,
+        primary_key=True,
+        related_name="dcrecord",
+        verbose_name=_("Header"),
     )
 
     title = ArrayField(models.TextField(verbose_name=" dc:title"), null=True)
