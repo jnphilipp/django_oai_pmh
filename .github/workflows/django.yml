@@ -114,7 +114,7 @@ jobs:
           echo "DATABASES['default']['NAME'] = 'dj_oai_pmh'" >> example/settings.py
           echo "DATABASES['default']['USER'] = 'mysql'" >> example/settings.py
           echo "DATABASES['default']['PASSWORD'] = 'mysql'" >> example/settings.py
-          echo "DATABASES['default']['HOST'] = 'localhost'" >> example/settings.py
+          echo "DATABASES['default']['HOST'] = '127.0.0.1'" >> example/settings.py
           echo "DATABASES['default']['PORT'] = '3306'" >> example/settings.py
           echo "OAI_PMH = {'REPOSITORY_NAME': 'OAI-PMH test', 'BASE_URL': 'localhost:8000/oai2'}" >> example/settings.py
           python manage.py test
