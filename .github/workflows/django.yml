@@ -28,7 +28,7 @@ jobs:
         run: |
           python -m pip install mypy
           mypy . --ignore-missing-imports --exclude migrations/ --exclude tests
-  test:
+  test-postgres:
     runs-on: ubuntu-latest
     services:
       db:
@@ -70,5 +70,49 @@ jobs:
           echo "DATABASES['default']['PASSWORD'] = 'postgres'" >> example/settings.py
           echo "DATABASES['default']['HOST'] = 'localhost'" >> example/settings.py
           echo "DATABASES['default']['PORT'] = '5432'" >> example/settings.py
+          echo "OAI_PMH = {'REPOSITORY_NAME': 'OAI-PMH test', 'BASE_URL': 'localhost:8000/oai2'}" >> example/settings.py
+          python manage.py test
+  test-mysql:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: mysql:latest
+        env:
+          MYSQL_USER: mysql
+          MYSQL_PASSWORD: mysql
+          MYSQL_DB: dj_aoi_pmh
+        ports:
+          - 3306:3306
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        django-version: ["3.2", "4.2", "5.0"]
+        exclude:
+          - python-version: 3.8
+            django-version: 5.0
+          - python-version: 3.9
+            django-version: 5.0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip wheel
+          pip install Django~=${{ matrix.django-version }}
+          pip install -r test-requirements.txt
+          pip install -r requirements.txt
+      - name: Run Tests
+        run: |
+          django-admin startproject example .
+          echo "INSTALLED_APPS.append('django_oai_pmh')" >> example/settings.py
+          echo "DATABASES['default']['ENGINE'] = 'django.db.backends.mysql'" >> example/settings.py
+          echo "DATABASES['default']['NAME'] = 'dj_oai_pmh'" >> example/settings.py
+          echo "DATABASES['default']['USER'] = 'mysql'" >> example/settings.py
+          echo "DATABASES['default']['PASSWORD'] = 'mysql'" >> example/settings.py
+          echo "DATABASES['default']['HOST'] = 'localhost'" >> example/settings.py
+          echo "DATABASES['default']['PORT'] = '3306'" >> example/settings.py
           echo "OAI_PMH = {'REPOSITORY_NAME': 'OAI-PMH test', 'BASE_URL': 'localhost:8000/oai2'}" >> example/settings.py
           python manage.py test
