@@ -78,10 +78,7 @@ jobs:
       db:
         image: mysql:latest
         env:
-          MYSQL_USER: mysql
-          MYSQL_PASSWORD: mysql
           MYSQL_ROOT_PASSWORD: mysql
-          MYSQL_DB: test_dj_aoi_pmh
         ports:
           - 3306:3306
     strategy:
@@ -112,7 +109,7 @@ jobs:
           echo "INSTALLED_APPS.append('django_oai_pmh')" >> example/settings.py
           echo "DATABASES['default']['ENGINE'] = 'django.db.backends.mysql'" >> example/settings.py
           echo "DATABASES['default']['NAME'] = 'dj_oai_pmh'" >> example/settings.py
-          echo "DATABASES['default']['USER'] = 'mysql'" >> example/settings.py
+          echo "DATABASES['default']['USER'] = 'root'" >> example/settings.py
           echo "DATABASES['default']['PASSWORD'] = 'mysql'" >> example/settings.py
           echo "DATABASES['default']['HOST'] = '127.0.0.1'" >> example/settings.py
           echo "DATABASES['default']['PORT'] = '3306'" >> example/settings.py
