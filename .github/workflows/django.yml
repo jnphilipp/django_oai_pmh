@@ -81,6 +81,7 @@ jobs:
           MYSQL_USER: mysql
           MYSQL_PASSWORD: mysql
           MYSQL_ROOT_PASSWORD: mysql
+          MYSQL_DB: test_dj_aoi_pmh
         ports:
           - 3306:3306
     strategy:
