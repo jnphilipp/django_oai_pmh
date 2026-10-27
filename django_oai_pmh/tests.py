@@ -26,7 +26,6 @@ from lxml import etree
 from . import views
 from .models import DCRecord, Header, MetadataFormat, Set, XMLRecord
 
-
 OAI_DC_RECORD = """<?xml version="1.0"?>
 <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
   <dc:title xml:lang="en-US">Time course and hazard function: A distributional analysis of fixation duration in reading</dc:title>

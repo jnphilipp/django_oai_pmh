@@ -26,7 +26,6 @@ from os import urandom
 from ..models import MetadataFormat, ResumptionToken, Set
 from ..settings import REPOSITORY_NAME, BASE_URL
 
-
 register = Library()
 
 

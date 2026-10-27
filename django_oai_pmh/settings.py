@@ -19,7 +19,6 @@
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
-
 USER_SETTINGS = getattr(settings, "OAI_PMH", {})
 
 if "REPOSITORY_NAME" in USER_SETTINGS:
